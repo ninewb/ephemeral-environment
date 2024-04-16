@@ -1,3 +1,0 @@
-export TF_VAR_tailscale_auth_key=tskey-api-knDMc8zJAw11CNTRL-7bbCRe5kVzhnnKnKaXixyhP9r8oeWJtK
-
-terraform destroy --auto-approve
