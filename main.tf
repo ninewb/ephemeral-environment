@@ -1,17 +1,17 @@
-#terraform {
-#  required_providers {
-#    tailscale = {
-#      source = "tailscale/tailscale"
-#      version = "0.13.5"
-#    }
-#  }
-#}
+terraform {
+  required_providers {
+    tailscale = {
+      source = "tailscale/tailscale"
+      version = "~> 0.13"
+    }
+  }
+}
 
 provider "cloudinit" {}
 
-#provider "tailscale" {
-#  tailnet = "tail9d499.ts.net"
-#}
+provider "tailscale" {
+  tailnet = "tail9d499.ts.net"
+}
 
 data "azurerm_client_config" "current" {}
 
