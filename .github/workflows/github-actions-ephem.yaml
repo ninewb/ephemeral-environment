@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Testing
-      - run: echo "This is my variable $TF_VAR_client_id"
+        run: echo "This is my variable $TF_VAR_client_id"
 
       - name: Check out repository code
         uses: actions/checkout@v4
