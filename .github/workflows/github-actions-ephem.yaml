@@ -1,7 +1,12 @@
 name: Launch Ephemeral Environment
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  build:
+    env:
+    TF_VAR_subscription_id: ${{secret.SUBSCRIPTION_ID}}
+    TF_VAR_client_id: ${{secret.CLIENT_ID}}
+    TF_VAR_client_secret: ${{secret.CLIENT_SECRET}}
+    TF_VAR_tenant_id: ${{secret.TENANT_ID}}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
