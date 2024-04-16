@@ -1,5 +1,0 @@
-export TF_VAR_tailscale_auth_key=tskey-auth-kxXhFGrAaJ11CNTRL-Kmpp1phugwEExRAVE9t9wEKHdsLrRDepD
-
-terraform init
-terraform plan
-terraform apply --auto-approve
