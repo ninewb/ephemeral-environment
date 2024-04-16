@@ -9,9 +9,9 @@
 
 provider "cloudinit" {}
 
-provider "tailscale" {
-  tailnet = "tail9d499.ts.net"
-}
+#provider "tailscale" {
+#  tailnet = "tail9d499.ts.net"
+#}
 
 data "azurerm_client_config" "current" {}
 
