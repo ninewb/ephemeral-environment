@@ -14,7 +14,7 @@ jobs:
       issues: write
     steps:
       - name: Testing
-        run: echo "This is my variable ${{ secrets.CLIENT_ID }}"
+        run: echo "Thisz is my variable ${{ secrets.CLIENT_ID }}"
 
       - name: Check out repository code
         uses: actions/checkout@v4
