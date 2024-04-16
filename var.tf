@@ -107,6 +107,11 @@ variable "tags" {
   default     = {}
 }
 
+variable "tailscale_auth_key" {
+  type    = string
+  default = null
+}
+
 variable "ssh_public_key" {
   description = "A custom ssh key to control access to the AKS cluster. Changing this forces a new resource to be created."
   type        = string

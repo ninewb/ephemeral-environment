@@ -1,3 +1,18 @@
+terraform {
+  required_providers {
+    tailscale = {
+      source = "tailscale/tailscale"
+      version = "0.13.5"
+    }
+  }
+}
+
+provider "cloudinit" {}
+
+provider "tailscale" {
+  tailnet = "tail9d499.ts.net"
+}
+
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_resource_group" "default" {
@@ -26,15 +41,31 @@ resource "azurerm_network_security_group" "default" {
 }
 
 resource "azurerm_network_security_rule" "default" {
-  name        = "${var.prefix}-ssh"
-  description = "Allow SSH from source"
-  count = (length(var.public_access_cidrs) > 0 ? 1 : 0)
+  name                        = "${var.prefix}-ssh"
+  description                 = "Allow SSH from source"
+  count                       = (length(var.public_access_cidrs) > 0 ? 1 : 0)
   priority                    = 120
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "22"
+  source_address_prefixes     = var.public_access_cidrs
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group
+  network_security_group_name = azurerm_network_security_group.default.name
+}
+
+resource "azurerm_network_security_rule" "tailscale" {
+  name                        = "Tailscale"
+  description                 = "Tailscale UDP port for direct connections. Reduces latency."
+  count                       = (length(var.public_access_cidrs) > 0 ? 1 : 0)
+  priority                    = 1010
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Udp"
+  source_port_range           = "*"
+  destination_port_range      = 41641
   source_address_prefixes     = var.public_access_cidrs
   destination_address_prefix  = "*"
   resource_group_name         = var.resource_group
@@ -70,31 +101,49 @@ resource "azurerm_network_interface_security_group_association" "server" {
 }
 
 resource "azurerm_linux_virtual_machine" "server" {
-    name                  = "${var.prefix}-vm"
-    location              = var.resource_group_location
-    resource_group_name   = azurerm_resource_group.default.name
-    network_interface_ids = [azurerm_network_interface.server.id]
-    size                  = var.virtual_machine_size
-    tags                  = var.tags
-    zone                  = 1
+  name                  = "${var.prefix}-vm"
+  location              = var.resource_group_location
+  resource_group_name   = azurerm_resource_group.default.name
+  network_interface_ids = [azurerm_network_interface.server.id]
+  size                  = var.virtual_machine_size
+  tags                  = var.tags
+  zone                  = 1
 
-    os_disk {
-      name                 = "${var.prefix}-disk"
-      disk_size_gb         = var.virtual_machine_disk_size
-      caching              = "ReadWrite"
-      storage_account_type = var.virtual_machine_disk_type
-    }
+  os_disk {
+    name                 = "${var.prefix}-disk"
+    disk_size_gb         = var.virtual_machine_disk_size
+    caching              = "ReadWrite"
+    storage_account_type = var.virtual_machine_disk_type
+  }
 
-    source_image_reference {
-      publisher = "Canonical"
-      offer     = "0001-com-ubuntu-server-jammy"
-      sku       = "22_04-lts"
-      version   = "latest"
-    }
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts"
+    version   = "latest"
+  }
 
-    computer_name                   = var.prefix
-    admin_username                  = var.virtual_machine_userid
-    admin_password                  = var.virtual_machine_password
-    disable_password_authentication = false
+  computer_name                   = var.prefix
+  admin_username                  = var.virtual_machine_userid
+  admin_password                  = var.virtual_machine_password
+  disable_password_authentication = false
+
+  custom_data = data.cloudinit_config.cloudinit.rendered
+}
+
+data "cloudinit_config" "cloudinit" {
+  base64_encode = true
+  gzip          = true
+  part {
+    content_type = "text/cloud-config"
+    content      = file("tailscale/cloudinit.yml")
+  }
+
+  part {
+    content_type = "text/x-shellscript"
+    content = templatefile("tailscale/cloudinit.sh", {
+      tailscale_auth_key = var.tailscale_auth_key
+    })
+  }
 }
 
