@@ -8,3 +8,5 @@ terraform.tfvars
 .terraform.tfstate.lock.info
 .terraform.lock.hcl
 .DS_Store
+build
+destroy
