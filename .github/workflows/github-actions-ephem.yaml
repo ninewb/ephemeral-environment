@@ -14,9 +14,6 @@ jobs:
       contents: read
       issues: write
     steps:
-      - name: Testing
-        run: echo "Thisz is my variable ${{ secrets.CLIENT_ID }}"
-
       - name: Check out repository code
         uses: actions/checkout@v4
       - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
@@ -29,20 +26,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
-
-      - name: Initiate Terraform
+      - name: Initiate terraform
         uses: hashicorp/setup-terraform@v3
       - run: terraform init
       - id: plan
         run: terraform plan -no-color
-
-      - run: echo ${{ steps.plan.outputs.stdout }}
-      - run: echo ${{ steps.plan.outputs.stderr }}
-      - run: echo ${{ steps.plan.outputs.exitcode }}
+      - id: apply
+        run: terraform apply --auto-approve
 
