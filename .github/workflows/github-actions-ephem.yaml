@@ -30,10 +30,11 @@ jobs:
         run: |
           sudo apt-get install -qq -o=Dpkg::Use-Pty=0 moreutils -y
           echo "${{ vars.VM_CIDRS }}"
-          jq -r --argjson cidr "${{ vars.VM_CIDRS }}" '. | .public_access_cidrs |= $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
+          export CIDR=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${VM_CIDR[@]}")
+          jq -r --argjson cidr "${CIDR}" '. | .public_access_cidrs |= $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
           cat ${{ github.workspace }}/terraform.tfvars.json
 
-      - name: Setup Terraform
+      - name: Setup Terraform   
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_wrapper: false
