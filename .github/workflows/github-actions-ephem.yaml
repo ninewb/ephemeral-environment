@@ -28,9 +28,8 @@ jobs:
 
       - name: Update Variables
         run: |
-          sudo apt-get -qq install -y moreutils
+          sudo apt-get install -qq -o=Dpkg::Use-Pty=0 moreutils -y
           echo "${{ vars.VM_CIDRS }}"
-          #export CIDR=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${VM_CIDR[@]}")
           jq -r --argjson cidr "${{ vars.VM_CIDRS }}" '. | .public_access_cidrs |= $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
           cat ${{ github.workspace }}/terraform.tfvars.json
 
