@@ -46,4 +46,4 @@ jobs:
 
       - name: Destroy Environment
         uses: hashicorp/setup-terraform@v3
-        run: terraform destroy --auto-approve
+      - run: terraform destroy --auto-approve
