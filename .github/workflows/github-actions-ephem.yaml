@@ -26,6 +26,13 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Update Variables
+        run: |
+          sudo apt-get install -y moreutils
+          echo ${{ env.VM_CIDRS }}
+          export CIDR=$(jq --compact-output --null-input '$ARGS.positional' --args -- "${VM_CIDR[@]}")
+          jq -r --argjson cidr "${{ env.VM_CIDRS }}" '. | .public_access_cidrs |= $cidr' terraform.tfvars.json | sponge terraform.tfvars.json
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:

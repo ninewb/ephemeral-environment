@@ -51,44 +51,8 @@ variable "rules" {
   type    = list(map(string))
   default = [
     {
-      name                         = "SAS_VPN"
-      priority                     = "110"
-      direction                    = "Inbound"
-      access                       = "Allow"
-      protocol                     = "*"
-      source_address_prefix        = "149.173.0.0/16"
-      source_port_range            = "*"
-      destination_address_prefix   = "*"
-      destination_port_range       = "*"
-      description                  = "Allow traffic over the SAS VPN"
-    },
-    {
-      name                         = "SAS_Open_01"
-      priority                     = "120"
-      direction                    = "Inbound"
-      access                       = "Allow"
-      protocol                     = "*"
-      source_address_prefix        = "10.0.0.0/8"
-      source_port_range            = "*"
-      destination_address_prefix   = "*"
-      destination_port_range       = "*"
-      description                  = "Allow traffic for SAS Open Network"
-    },
-    {
-      name                         = "SAS_Open_02"
-      priority                     = "130"
-      direction                    = "Inbound"
-      access                       = "Allow"
-      protocol                     = "*"
-      source_address_prefix        = "172.16.0.0/12"
-      source_port_range            = "*"
-      destination_address_prefix   = "*"
-      destination_port_range       = "*"
-      description                  = "Allow traffic for SAS Open Network"
-    },
-    {
       name                         = "Azure_Cloud"
-      priority                     = "140"
+      priority                     = "100"
       direction                    = "Inbound"
       access                       = "Allow"
       protocol                     = "*"
