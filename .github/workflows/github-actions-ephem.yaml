@@ -31,6 +31,9 @@ jobs:
       - name: Update Variables
         run: |
           jq -r --argjson cidr "${{ vars.VM_CIDRS }}" '.public_access_cidrs = $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
+          _time=$(date +%s)
+          jq -r --arg name "$_time" '.resource_group += $name' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json                                                                                      
+          
           cat ${{ github.workspace }}/terraform.tfvars.json
 
       - name: Setup Terraform   
