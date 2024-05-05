@@ -99,7 +99,7 @@ resource "azurerm_linux_virtual_machine" "server" {
   admin_password                  = var.virtual_machine_password
   disable_password_authentication = false
 
-  custom_data = data.cloudinit_config.cloudinit.rendered
+  #custom_data = data.cloudinit_config.cloudinit.rendered
 }
 
 #data "cloudinit_config" "cloudinit" {
