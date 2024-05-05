@@ -29,9 +29,8 @@ jobs:
       - name: Update Variables
         run: |
           sudo apt-get install -qq -o=Dpkg::Use-Pty=0 moreutils -y &> /dev/null
-          echo "${{ vars.VM_CIDRS }}" | jq
 
-          jq -r --argjson cidr "${{ vars.VM_CIDRS }}" '.public_access_cidrs += $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
+          jq -r --argjson cidr "${{ vars.VM_CIDRS }}" '.public_access_cidrs = $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
           cat ${{ github.workspace }}/terraform.tfvars.json
 
       - name: Setup Terraform   
@@ -52,6 +51,6 @@ jobs:
           output=$(terraform output viya_instance_ip_addr)
           echo $output
 
-      - name: Destroy Environment
-        uses: hashicorp/setup-terraform@v3
-      - run: terraform destroy --auto-approve
+      #- name: Destroy Environment
+        #  uses: hashicorp/setup-terraform@v3
+      #- run: terraform destroy --auto-approve
