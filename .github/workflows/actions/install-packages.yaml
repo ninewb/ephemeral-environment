@@ -1,0 +1,9 @@
+name: 'Install Packages'
+description: 'Installs Packages for Workflow'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install Packages
+      run: |
+        sudo apt-get install -qq -o=Dpkg::Use-Pty=0 moreutils -y &> /dev/null
