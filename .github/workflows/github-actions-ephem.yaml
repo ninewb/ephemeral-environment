@@ -26,8 +26,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - uses: actions/checkout@v2
-      - uses: ./.github/workflows/actions/install-packages.yaml
+      - uses: ./.github/actions/install-packages.yaml
 
       - name: Update Variables
         run: |
