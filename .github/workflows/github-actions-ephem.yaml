@@ -48,7 +48,7 @@ jobs:
 
       - name: Grab Outputs
         run: |
-          output=$(terraform output viya_instance_ip_addr)
+          output=$(terraform output instance_ip_addr)
           echo $output
 
       #- name: Destroy Environment
