@@ -1,17 +1,4 @@
-terraform {
-  required_providers {
-    tailscale = {
-      source = "tailscale/tailscale"
-      version = "~> 0.13"
-    }
-  }
-}
-
 provider "cloudinit" {}
-
-provider "tailscale" {
-  tailnet = "tail9d499.ts.net"
-}
 
 data "azurerm_client_config" "current" {}
 
@@ -50,22 +37,6 @@ resource "azurerm_network_security_rule" "default" {
   protocol                    = "Tcp"
   source_port_range           = "*"
   destination_port_range      = "22"
-  source_address_prefixes     = var.public_access_cidrs
-  destination_address_prefix  = "*"
-  resource_group_name         = var.resource_group
-  network_security_group_name = azurerm_network_security_group.default.name
-}
-
-resource "azurerm_network_security_rule" "tailscale" {
-  name                        = "Tailscale"
-  description                 = "Tailscale UDP port for direct connections. Reduces latency."
-  count                       = (length(var.public_access_cidrs) > 0 ? 1 : 0)
-  priority                    = 1010
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Udp"
-  source_port_range           = "*"
-  destination_port_range      = 41641
   source_address_prefixes     = var.public_access_cidrs
   destination_address_prefix  = "*"
   resource_group_name         = var.resource_group
@@ -131,19 +102,19 @@ resource "azurerm_linux_virtual_machine" "server" {
   custom_data = data.cloudinit_config.cloudinit.rendered
 }
 
-data "cloudinit_config" "cloudinit" {
-  base64_encode = true
-  gzip          = true
-  part {
-    content_type = "text/cloud-config"
-    content      = file("tailscale/cloudinit.yml")
-  }
-
-  part {
-    content_type = "text/x-shellscript"
-    content = templatefile("tailscale/cloudinit.sh", {
-      tailscale_auth_key = var.tailscale_auth_key
-    })
-  }
-}
+#data "cloudinit_config" "cloudinit" {
+#  base64_encode = true
+#  gzip          = true
+#  part {
+#    content_type = "text/cloud-config"
+#    content      = file("tailscale/cloudinit.yml")
+#  }
+#
+#  part {
+#    content_type = "text/x-shellscript"
+#    content = templatefile("tailscale/cloudinit.sh", {
+#      tailscale_auth_key = var.tailscale_auth_key
+#    })
+#  }
+#}
 
