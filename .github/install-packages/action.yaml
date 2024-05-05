@@ -5,5 +5,6 @@ runs:
   using: "composite"
   steps:
     - name: Install Packages
+      shell: bash
       run: |
         sudo apt-get install -qq -o=Dpkg::Use-Pty=0 moreutils -y &> /dev/null
