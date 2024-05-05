@@ -28,9 +28,9 @@ jobs:
 
       - name: Update Variables
         run: |
-          #sudo apt-get install -qq -o=Dpkg::Use-Pty=0 moreutils -y
+          sudo apt-get install -qq -o=Dpkg::Use-Pty=0 moreutils -y
           echo ${{ vars.VM_CIDRS }}
-          jq -r --argjson cidr "${CIDR}" '. | .public_access_cidrs |= $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
+          jq -r --arg cidr "${CIDR}" '. | .public_access_cidrs |= $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
           cat ${{ github.workspace }}/terraform.tfvars.json
 
       - name: Setup Terraform   
