@@ -1,4 +1,4 @@
-provider "cloudinit" {}
+#provider "cloudinit" {}
 
 data "azurerm_client_config" "current" {}
 
