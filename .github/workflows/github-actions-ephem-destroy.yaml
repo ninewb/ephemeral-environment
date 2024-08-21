@@ -1,0 +1,37 @@
+name: Launch Ephemeral Environment
+on:
+  push:
+    paths:
+      - '**cleanup.json'
+jobs:
+  destroy:
+    env:
+      TF_VAR_tailscale_auth_key: ${{ secrets.TAILSCALE_OAUTH }}
+      TF_VAR_subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
+      TF_VAR_client_id: ${{ secrets.CLIENT_ID }}
+      TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
+      TF_VAR_tenant_id: ${{ secrets.TENANT_ID }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      issues: write
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - uses: ./.github/install-packages
+
+      - name: Destroy Environment
+        uses: hashicorp/setup-terraform@v3
+      - run: terraform destroy --auto-approve
+
