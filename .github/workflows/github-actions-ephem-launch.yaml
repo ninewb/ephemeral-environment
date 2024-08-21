@@ -31,7 +31,7 @@ jobs:
         env:
           DEBUG_PASSWORD: ${{ secrets.SSH_PUBLIC_KEY }}
         run: |
-          echo ${{secrets.SSH_PUBLIC_KEY}} | sed 's/./& /g'
+          echo ${{secrets.SSH_PUBLIC_KEY}} | sed 's/ssh/no/g'
 
       - uses: ./.github/install-packages
 
