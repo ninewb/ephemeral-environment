@@ -53,8 +53,6 @@ jobs:
 
       - name: terraform initialization
         run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl
-      - name: terraform unlock
-        run: terraform force-unlock
 
       - name: terraform plan
         run: terraform plan -out=${{ github.workspace }}/tf.plan
