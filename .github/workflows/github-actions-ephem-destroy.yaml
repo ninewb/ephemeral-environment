@@ -33,6 +33,10 @@ jobs:
 
       - uses: ./.github/install-packages
 
+      - name: Uncomment Terraform Cloud Backend Configuration file
+        id: uncomment
+        run: sed -i 's/^#*//' ${{ github.workspace }}/backend.tf
+
       - name: terraform initialization
         run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl
 
