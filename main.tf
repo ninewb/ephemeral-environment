@@ -94,12 +94,15 @@ resource "azurerm_linux_virtual_machine" "server" {
     version   = "latest"
   }
 
+  admin_ssh_key {
+    username   = var.virtual_machine_userid
+    public_key = var.ssh_public_key
+  }
+
   computer_name                   = var.prefix
   admin_username                  = var.virtual_machine_userid
   admin_password                  = var.virtual_machine_password
-  disable_password_authentication = false
-
-  #custom_data = data.cloudinit_config.cloudinit.rendered
+  disable_password_authentication = true
 }
 
 #data "cloudinit_config" "cloudinit" {

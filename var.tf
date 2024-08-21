@@ -82,3 +82,8 @@ variable "public_access_cidrs" {
   type        = list(string)
   default     = null
 }
+
+variable "ssh_public_key" {
+  description = "Public Key for Server Access"
+  type        = string
+}
