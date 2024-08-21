@@ -27,11 +27,12 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Set up secret file
+      - name: set public key
         env:
-          DEBUG_PASSWORD: ${{ secrets.SSH_PUBLIC_KEY }}
+          PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
         run: |
-          echo ${{secrets.SSH_PUBLIC_KEY}} | sed 's/ssh/no/g'
+          echo ${{ secrets.SSH_PUBLIC_KEY }} > ~/.ssh/id_rsa.pub
+          chmod 600  ~/.ssh/id_rsa.pub
 
       - uses: ./.github/install-packages
 
