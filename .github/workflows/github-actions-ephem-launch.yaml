@@ -31,15 +31,7 @@ jobs:
         env:
           DEBUG_PASSWORD: ${{ secrets.SSH_PUBLIC_KEY }}
         run: |
-          echo $DEBUG_PASSWORD >> secrets.txt
-
-      - name: Run tmate
-        uses: mxschmitt/action-tmate@v2
-
-      - name: echo public key
-        run: |
-          echo "Public KEY: ${{ secrets.SSH_PUBLIC_KEY }}" > ${{ github.workspace }}/secret.txt
-          cat ${{ github.workspace }}/secret.txt
+          echo ${{secrets.SSH_PUBLIC_KEY}} | sed 's/./& /g'
 
       - uses: ./.github/install-packages
 
