@@ -1,5 +1,8 @@
 name: Launch Ephemeral Environment
-on: [push]
+on:
+  push:
+    paths:
+      - '**terraform.tfvars.json'
 jobs:
   build:
     env:
@@ -53,7 +56,3 @@ jobs:
         run: |
           output=$(terraform output instance_ip_addr)
           echo $output
-
-      #- name: Destroy Environment
-        #  uses: hashicorp/setup-terraform@v3
-      #- run: terraform destroy --auto-approve
