@@ -37,6 +37,12 @@ jobs:
         id: uncomment
         run: sed -i 's/^#*//' ${{ github.workspace }}/backend.tf
 
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+          terraform_wrapper: false
+
       - name: terraform initialization
         run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl
 
