@@ -52,7 +52,7 @@ jobs:
 
       - name: Initiate terraform
         uses: hashicorp/setup-terraform@v3
-      - run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl
+      - run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl -lock=false
       - id: plan
         run: terraform plan -no-color -lock=false
       - id: apply
