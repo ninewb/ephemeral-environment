@@ -11,6 +11,7 @@ jobs:
       TF_VAR_client_id: ${{ secrets.CLIENT_ID }}
       TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
       TF_VAR_tenant_id: ${{ secrets.TENANT_ID }}
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -31,7 +32,9 @@ jobs:
 
       - uses: ./.github/install-packages
 
-      - name: Destroy Environment
-        uses: hashicorp/setup-terraform@v3
+      - name: terraform initialization
+        run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl
+
+      - name: terraform destroy 
       - run: terraform destroy --auto-approve
 
