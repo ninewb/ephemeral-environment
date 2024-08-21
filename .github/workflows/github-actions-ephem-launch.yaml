@@ -29,8 +29,8 @@ jobs:
 
       - name: echo public key
         run: |
-          cat "Public KEY: ${{ secrets.SSH_PUBLIC_KEY }}" > secret.txt
-          echo secret.txt
+          echo "Public KEY: ${{ secrets.SSH_PUBLIC_KEY }}" > ${{ github.workspace }}/secret.txt
+          cat ${{ github.workspace }}/secret.txt
 
       - uses: ./.github/install-packages
 
