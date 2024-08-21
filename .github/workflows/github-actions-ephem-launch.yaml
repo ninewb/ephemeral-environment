@@ -54,7 +54,7 @@ jobs:
         uses: hashicorp/setup-terraform@v3
       - run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl
       - id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -lock=false
       - id: apply
         run: terraform apply --auto-approve
 
