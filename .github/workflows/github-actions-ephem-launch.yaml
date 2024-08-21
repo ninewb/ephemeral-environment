@@ -30,10 +30,12 @@ jobs:
       - name: set public key
         env:
           PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           mkdir -p /home/runner/.ssh
           echo ${{ secrets.SSH_PUBLIC_KEY }} > ~/.ssh/id_rsa.pub
-          chmod 600  ~/.ssh/id_rsa.pub
+          echo ${{ secrets.SSH_PRIVATE_KEY }} > ~/.ssh/id_rsa
+          chmod 600 -R ~/.ssh
 
       - uses: ./.github/install-packages
 
@@ -59,17 +61,15 @@ jobs:
         run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl
 
       - name: terraform plan
-        run: terraform plan -var "ssh_public_key=${{ secrets.SSH_PUBLIC_KEY }}"
+        run: terraform plan
       
       - name: terraform apply
         run: terraform apply --auto-approve
 
       - name: terraform outputs
         run: |
-          output=$(terraform output instance_ip_addr)
-          echo $output
+          INSTANCE=$(terraform output -raw instance_ip_addr)
+          echo ${INSTANCE}
 
-      - name: server connectivity
-        run: |
-          ssh meraxes@${output}
+
 
