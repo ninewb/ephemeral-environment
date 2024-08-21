@@ -1,16 +1,5 @@
 #provider "cloudinit" {}
 
-terraform {
-  backend "remote" {
-    organization = "meraxes-actions"
-
-    workspaces {
-      name = "ephemeral-environment"
-    }
-  }
-}
-
-
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_resource_group" "default" {

@@ -39,14 +39,19 @@ jobs:
           
           cat ${{ github.workspace }}/terraform.tfvars.json
 
+      - name: Uncomment Terraform Cloud Backend Configuration file
+        id: uncomment
+        run: sed -i 's/^#*//' ${{ github.workspace }}/backend.tf
+
       - name: Setup Terraform   
         uses: hashicorp/setup-terraform@v3
         with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
           terraform_wrapper: false
 
       - name: Initiate terraform
         uses: hashicorp/setup-terraform@v3
-      - run: terraform init
+      - run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl
       - id: plan
         run: terraform plan -no-color
       - id: apply
