@@ -55,10 +55,10 @@ jobs:
         run: terraform init -backend-config=${{ github.workspace }}/meraxes-actions.hcl
 
       - name: terraform plan
-        run: terraform plan -out=${{ github.workspace }}/tf.plan
+        run: terraform plan
       
       - name: terraform apply
-        run: terraform apply --auto-approve ${{ github.workspace }}/tf.plan
+        run: terraform apply --auto-approve
 
       - name: Grab Outputs
         run: |
