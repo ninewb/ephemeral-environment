@@ -19,21 +19,17 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - name: Check out repository code
+      - name: check-out repository code
         uses: actions/checkout@v4
-      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
 
-      - name: Azure login
+      - name: azure login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - uses: ./.github/install-packages
 
-      - name: Update Variables
+      - name: update variables
         run: |
           jq -r --argjson cidr "${{ vars.VM_CIDRS }}" '.public_access_cidrs = $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
           _time=$(date +%s)
@@ -41,11 +37,11 @@ jobs:
           
           cat ${{ github.workspace }}/terraform.tfvars.json
 
-      - name: Uncomment Terraform Cloud Backend Configuration file
+      - name: uncomment backends
         id: uncomment
         run: sed -i 's/^#*//' ${{ github.workspace }}/backend.tf
 
-      - name: Setup Terraform   
+      - name: terraform setup   
         uses: hashicorp/setup-terraform@v3
         with:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
@@ -60,7 +56,12 @@ jobs:
       - name: terraform apply
         run: terraform apply --auto-approve
 
-      - name: Grab Outputs
+      - name: terraform outputs
         run: |
           output=$(terraform output instance_ip_addr)
           echo $output
+
+      - name: server connectivity
+        run: |
+          ssh meraxes@${output}
+
