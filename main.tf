@@ -1,4 +1,4 @@
-#provider "cloudinit" {}
+provider "cloudinit" {}
 
 data "azurerm_client_config" "current" {}
 
@@ -105,19 +105,12 @@ resource "azurerm_linux_virtual_machine" "server" {
   }
 }
 
-#data "cloudinit_config" "cloudinit" {
-#  base64_encode = true
-#  gzip          = true
-#  part {
-#    content_type = "text/cloud-config"
-#    content      = file("tailscale/cloudinit.yml")
-#  }
-#
-#  part {
-#    content_type = "text/x-shellscript"
-#    content = templatefile("tailscale/cloudinit.sh", {
-#      tailscale_auth_key = var.tailscale_auth_key
-#    })
-#  }
-#}
+data "cloudinit_config" "cloudinit" {
+  base64_encode = true
+  gzip          = true
+  part {
+    content_type = "text/cloud-config"
+    content      = file("cloudinit/cloudinit.yml")
+  }
+}
 
