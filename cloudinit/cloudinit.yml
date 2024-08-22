@@ -8,4 +8,7 @@
 # Run commands on first boot
 # https://cloudinit.readthedocs.io/en/latest/reference/examples.html#run-commands-on-first-boot
 runcmd:
- - [ curl, -L, "https://github.com/ninewb/dotfiles/setup", >, x, &&, chmod, +x, &&, sudo, ./x ]
+ - [ curl, -L, "https://github.com/ninewb/dotfiles/setup" ]
+ - [ mv, setup, x ]
+ - [ chmod, +x x ]
+ - [ sudo, ./x ]
