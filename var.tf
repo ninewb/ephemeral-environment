@@ -43,10 +43,6 @@ variable "virtual_machine_userid" {
   default = "meraxes"
 }
 
-variable "virtual_machine_password" {
-  type    = string
-}
-
 variable "rules" {
   type    = list(map(string))
   default = [
