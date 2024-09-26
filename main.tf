@@ -77,6 +77,7 @@ resource "azurerm_linux_virtual_machine" "server" {
   resource_group_name   = azurerm_resource_group.default.name
   network_interface_ids = [azurerm_network_interface.server.id]
   size                  = var.virtual_machine_size
+  admin_username        = var.vm_admin
   tags                  = var.tags
   zone                  = 1
 
