@@ -95,8 +95,6 @@ resource "azurerm_linux_virtual_machine" "server" {
   }
 
   computer_name                   = var.prefix
-  admin_username                  = var.virtual_machine_userid
-  admin_password                  = var.virtual_machine_password
   disable_password_authentication = true
 
   admin_ssh_key {
