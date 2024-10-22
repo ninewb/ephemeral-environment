@@ -10,6 +10,10 @@ provider "azurerm" {
   }
 }
 
+variable "date" {
+ type = string
+}
+
 variable "prefix" {
   type = string
 }
