@@ -32,8 +32,9 @@ jobs:
           PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
         run: |
           mkdir -p /home/runner/.ssh
-          echo ${{ secrets.SSH_PUBLIC_KEY }} > ~/.ssh/id_rsa.pub
-          chmod 600 -R ~/.ssh/id_rsa.pub
+          echo ${{ secrets.SSH_PUBLIC_KEY }} > /home/runner/.ssh/id_rsa.pub
+          chmod 600 -R /home/runner/.ssh/id_rsa.pub
+          ls /home/runner/.ssh
 
       - uses: ./.github/install-packages
 
