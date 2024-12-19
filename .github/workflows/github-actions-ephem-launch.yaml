@@ -48,9 +48,10 @@ jobs:
           cat ${{ github.workspace }}/terraform.tfvars.json
 
       - name: Check Values
-        run: echo ${{ secrets.SUBSCRIPTION_ID }} | sed 's/-/+/g'
-        run: echo ${{ secrets.CLIENT_ID }} | sed 's/-/+/g'
-        run: echo ${{ secrets.CLIENT_SECRET }} | sed 's/-/+/g'
+        run: |
+          echo ${{ secrets.SUBSCRIPTION_ID }} | sed 's/-/+/g'
+          echo ${{ secrets.CLIENT_ID }} | sed 's/-/+/g'
+          echo ${{ secrets.CLIENT_SECRET }} | sed 's/-/+/g'
 
       #- name: uncomment backends
        # id: uncomment
