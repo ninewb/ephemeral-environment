@@ -45,9 +45,9 @@ jobs:
           
           cat ${{ github.workspace }}/terraform.tfvars.json
 
-      - name: uncomment backends
-        id: uncomment
-        run: sed -i 's/^#*//' ${{ github.workspace }}/backend.tf
+      #- name: uncomment backends
+       # id: uncomment
+      #  run: sed -i 's/^#*//' ${{ github.workspace }}/backend.tf
 
       - name: terraform setup   
         uses: hashicorp/setup-terraform@v3

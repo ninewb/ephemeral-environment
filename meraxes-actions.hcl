@@ -1,3 +1,10 @@
-workspaces { name = "ephemeral-environment" }
-hostname     = "app.terraform.io"
-organization = "meraxes-actions"
+terraform {
+    backend "remote" {
+        hostname     = "app.terraform.io"
+        organization = "meraxes-actions"
+        workspaces { 
+            name = "ephemeral-environment" 
+        }
+    }
+}
+
