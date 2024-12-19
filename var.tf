@@ -71,7 +71,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "ssh_public_key" {
+variable "public_key" {
   description = "A custom ssh key to control access to the AKS cluster. Changing this forces a new resource to be created."
   type        = string
   default     = "~/.ssh/id_rsa.pub"
@@ -82,8 +82,3 @@ variable "public_access_cidrs" {
   type        = list(string)
   default     = null
 }
-
-#variable "ssh_public_key" {
-#  description = "Public Key for Server Access"
-#  type        = string
-#}

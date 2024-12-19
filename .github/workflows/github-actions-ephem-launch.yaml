@@ -32,10 +32,9 @@ jobs:
           PUBLIC_KEY: ${{ secrets.SSH_PUBLIC_KEY }}
         run: |
           mkdir -p /home/runner/.ssh
-          echo ${{ secrets.SSH_PUBLIC_KEY }} > /home/runner/.ssh/id_rsa.pub
-          chmod 600 -R /home/runner/.ssh/id_rsa.pub
-          ls /home/runner/.ssh
-          cat /home/runner/.ssh/id_rsa.pub
+          echo ${{ secrets.SSH_PUBLIC_KEY }} > ${{ github.workspace }}/id_rsa.pub
+          chmod 600 -R ${{ github.workspace }}/id_rsa.pub
+          ls -ltr ${{ github.workspace }} | grep id
 
       - uses: ./.github/install-packages
 
@@ -43,8 +42,11 @@ jobs:
         run: |
           jq -r --argjson cidr "${{ vars.VM_CIDRS }}" '.public_access_cidrs = $cidr' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json
           _time=$(date +%s)
+
           jq -r --arg name "$_time" '.resource_group += $name' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json                                                                                      
           
+          jq -r --arg key "${{ github.workspace }}/id_rsa.pub" '.public_key += $key' ${{ github.workspace }}/terraform.tfvars.json | sponge ${{ github.workspace }}/terraform.tfvars.json  
+
           cat ${{ github.workspace }}/terraform.tfvars.json
 
       #- name: uncomment backends
@@ -63,7 +65,6 @@ jobs:
       - name: terraform plan
         uses: dflook/terraform-plan@v1.29.1
         env:
-          TF_VAR_tailscale_auth_key: ${{ secrets.TAILSCALE_OAUTH }}
           TF_VAR_subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
           TF_VAR_client_id: ${{ secrets.CLIENT_ID }}
           TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
@@ -73,7 +74,6 @@ jobs:
       - name: terraform apply
         uses: dflook/terraform-apply@v1.29.1
         env:
-          TF_VAR_tailscale_auth_key: ${{ secrets.TAILSCALE_OAUTH }}
           TF_VAR_subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
           TF_VAR_client_id: ${{ secrets.CLIENT_ID }}
           TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
