@@ -3,7 +3,6 @@ provider "azurerm" {
     virtual_machine {
       delete_os_disk_on_deletion = true
     }
-    subscription_id = "18bf197f-1f43-478a-a3bd-f414bcdfafde"
     key_vault {
       recover_soft_deleted_key_vaults = true
       purge_soft_delete_on_destroy    = false
