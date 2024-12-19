@@ -67,17 +67,11 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -var="subscription_id=${{ secrets.SUBSCRIPTION_ID }}" -var="client_id=${{ secrets.CLIENT_ID }}" -var="client_secret=${{ secrets.CLIENT_SECRET }}" -var="tenant_id=${{ secrets.TENANT_ID }}"
         continue-on-error: true
 
       - name: terraform apply
-        run: terraform apply -auto-approve
-        env:
-          TF_VAR_subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
-          TF_VAR_client_id: ${{ secrets.CLIENT_ID }}
-          TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
-          TF_VAR_tenant_id: ${{ secrets.TENANT_ID }}
-          TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+        run: terraform apply -auto-approve -var="subscription_id=${{ secrets.SUBSCRIPTION_ID }}" -var="client_id=${{ secrets.CLIENT_ID }}" -var="client_secret=${{ secrets.CLIENT_SECRET }}" -var="tenant_id=${{ secrets.TENANT_ID }}"
           
       - name: terraform outputs
         run: |
