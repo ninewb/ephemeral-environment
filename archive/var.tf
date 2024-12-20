@@ -1,13 +1,29 @@
-provider "azurerm" {
-  features {
-    virtual_machine {
-      delete_os_disk_on_deletion = true
-    }
-    key_vault {
-      recover_soft_deleted_key_vaults = true
-      purge_soft_delete_on_destroy    = false
-    }
-  }
+variable "client_id" {
+  description = "The Client ID for the Service Principal"
+  type        = string
+  default     = ""
+}
+
+variable "client_secret" {
+  description = "The Client Secret for the Service Principal."
+  type        = string
+  default     = ""
+}
+
+variable "subscription_id" {
+  description = "The ID of the Subscription."
+  type        = string
+}
+
+variable "tenant_id" {
+  description = "The ID of the Tenant to which the subscription belongs"
+  type        = string
+}
+
+variable "use_msi" {
+  description = "Use Managed Identity for Authentication (Azure VMs only)"
+  type        = bool
+  default     = false
 }
 
 variable "subscription_id" {}

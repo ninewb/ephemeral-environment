@@ -4,10 +4,13 @@ provider "azurerm" {
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
-  partner_id      = var.partner_id
   use_msi         = var.use_msi
 
-  features {}
+  features {    
+    virtual_machine {
+      delete_os_disk_on_deletion = true
+    }
+  }
 }
 
 provider "azuread" {
@@ -15,6 +18,8 @@ provider "azuread" {
   client_secret = var.client_secret
   tenant_id     = var.tenant_id
 }
+
+provider "cloudinit" {}
 
 data "azurerm_subscription" "current" {}
 
