@@ -114,6 +114,7 @@ resource "azurerm_linux_virtual_machine" "server" {
 
   computer_name                   = var.prefix
   disable_password_authentication = true
+  custom_data                     = data.cloudinit_config.cloudinit.rendered
 
   admin_ssh_key {
     username   = var.virtual_machine_userid
