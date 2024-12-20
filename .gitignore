@@ -10,3 +10,5 @@ terraform.tfvars
 .DS_Store
 build
 destroy
+.help
+
