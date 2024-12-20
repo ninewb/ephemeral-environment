@@ -3,7 +3,7 @@ terraform {
         hostname     = "app.terraform.io"
         organization = "meraxes-actions"
         workspaces { 
-            name = "ephemeral-environment" 
+            name     = "ephemeral-environment" 
         }
     }
 }
