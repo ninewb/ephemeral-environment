@@ -1,3 +1,5 @@
+
+
 variable "client_id" {
   description = "The Client ID for the Service Principal"
   type        = string
@@ -25,11 +27,6 @@ variable "use_msi" {
   type        = bool
   default     = false
 }
-
-variable "subscription_id" {}
-variable "client_id" {}
-variable "client_secret" {}
-variable "tenant_id" {}
 
 variable "date" {
  type = string
