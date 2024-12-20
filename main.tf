@@ -23,15 +23,6 @@ data "azurerm_resource_group" "network_rg" {
   name  = var.vnet_resource_group_name
 }
 
-resource "azurerm_proximity_placement_group" "proximity" {
-  count = var.node_pools_proximity_placement ? 1 : 0
-
-  name                = "${var.prefix}-ProximityPlacementGroup"
-  location            = var.location
-  resource_group_name = local.aks_rg.name
-  tags                = var.tags
-}
-
 resource "azurerm_network_security_group" "nsg" {
   count               = var.nsg_name == null ? 1 : 0
   name                = "${var.prefix}-nsg"
