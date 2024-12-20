@@ -32,9 +32,9 @@ jobs:
 
       - uses: ./.github/install-packages
 
-      - name: uncomment backends
-        id: uncomment
-        run: sed -i 's/^#*//' ${{ github.workspace }}/backend.tf
+      #- name: uncomment backends
+      #  id: uncomment
+      #  run: sed -i 's/^#*//' ${{ github.workspace }}/backend.tf
 
       - name: set public key
         env:
